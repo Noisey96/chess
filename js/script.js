@@ -1,4 +1,4 @@
-import { preferRandomCapture } from './engines.js';
+import { lazyMiniMax } from './engines.js';
 
 const game = new Chess();
 const config = {
@@ -23,7 +23,7 @@ function onDrop(source, target) {
 	});
 	if (move === null) return 'snapback';
 
-	window.setTimeout(preferRandomCapture(game, board), 250);
+	window.setTimeout(lazyMiniMax(game, board), 250);
 }
 
 function onSnapEnd() {
