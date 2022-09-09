@@ -53,7 +53,7 @@ function subtractPieces(fen, player) {
 		const value = values[v] ?? 0;
 		return t + value;
 	}, 0);
-	return player === 'white' ? valueForWhite : -valueForWhite;
+	return player === 'w' ? valueForWhite : -valueForWhite;
 }
 
 export function lazyMiniMax(game, board) {
@@ -70,7 +70,7 @@ export function lazyMiniMax(game, board) {
 		game.move(m);
 		const possibleFen = game.fen();
 		game.undo();
-		const curValue = subtractPieces(possibleFen, 'black');
+		const curValue = subtractPieces(possibleFen, game.turn());
 		if (curValue > max) {
 			max = curValue;
 			maxIdxs = [i];

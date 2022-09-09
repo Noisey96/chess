@@ -36,5 +36,37 @@
 	</head>
 	<body>
 		<div id="board" style="width: 600px"></div>
+		<div id="settings-start" class="settings">
+			<fieldset>
+				<legend>Difficulty:</legend>
+				<div>
+					<input type="radio" id="easy" name="difficulty" value="easy" checked />
+					<label for="easy">Easy</label>
+					<input type="radio" id="medium" name="difficulty" value="medium" />
+					<label for="medium">Medium</label>
+					<input type="radio" id="hard" name="difficulty" value="hard" />
+					<label for="hard">Hard</label>
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend>Play as:</legend>
+				<div>
+					<input type="radio" id="black" name="side" value="black" checked />
+					<label for="black">Black</label>
+					<input type="radio" id="white" name="side" value="white" />
+					<label for="white">White</label>
+					<input type="radio" id="random" name="side" value="random" />
+					<label for="random">Random</label>
+				</div>
+			</fieldset>
+			<button id="start-game" type="button">Start Game</button>
+		</div>
+		<div id="status" hidden></div>
+		<div id="settings-playing" class="settings" hidden>
+			<button id="undo" type="button">Undo</button>
+			<button id="redo" type="button">Redo</button>
+			<button id="restart" type="button">Restart</button>
+			<button id="new-game" type="button">New Game</button>
+		</div>
 	</body>
 </html>
