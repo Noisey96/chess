@@ -29,21 +29,55 @@ function onDrop(source, target) {
 	if (move === null) return 'snapback';
 
 	future = [];
+	updateStatus();
 
-	window.setTimeout(algo(game, board), 250);
+	algo(game, board);
+	updateStatus();
+	checkButtons();
 }
 
 function onSnapEnd() {
 	board.position(game.fen());
 }
 
-function flipHidden() {
+function flipDisplay(curState) {
 	let startSettings = document.body.querySelector('#settings-start');
 	let status = document.body.querySelector('#status');
 	let playingSettings = document.body.querySelector('#settings-playing');
-	startSettings.hidden = !startSettings.hidden;
-	status.hidden = !status.hidden;
-	playingSettings.hidden = !playingSettings.hidden;
+	if (curState === 'config') {
+		startSettings.style.display = 'none';
+		status.style.display = 'flex';
+		playingSettings.style.display = 'flex';
+	} else if (curState === 'playing') {
+		startSettings.style.display = 'flex';
+		status.style.display = 'none';
+		playingSettings.style.display = 'none';
+	}
+}
+
+function checkButtons() {
+	const undoButton = document.body.querySelector('#undo');
+	const redoButton = document.body.querySelector('#redo');
+	undoButton.disabled = game.history().length < 2;
+	redoButton.disabled = !future.length;
+}
+
+function updateStatus() {
+	const statusArea = document.body.querySelector('#status');
+	let status, who;
+
+	if ((side === 'black' && game.turn() === 'b') || (side === 'white' && game.turn() === 'w'))
+		who = 'you';
+	else who = 'computer';
+
+	if (game.in_checkmate() && who === 'you') status = 'You lose! The computer has checkmate.';
+	else if (game.in_checkmate()) status = 'You win! You have checkmate.';
+	else if (game.in_draw()) status = 'You draw!';
+	else if (game.in_check() && who === 'you') status = 'Your turn. The computer has check!';
+	else if (game.in_check()) status = "The computer's turn. You have check!";
+	else if (who === 'you') status = 'Your turn.';
+	else status = "The computer's turn.";
+	statusArea.textContent = status;
 }
 
 function startGame() {
@@ -63,22 +97,26 @@ function startGame() {
 		onSnapEnd: onSnapEnd,
 	};
 	board = Chessboard('board', config);
-	if (side === 'black') window.setTimeout(algo(game, board), 250);
-
-	flipHidden();
+	if (side === 'black') algo(game, board);
+	checkButtons();
+	updateStatus();
+	flipDisplay('config');
 }
 
 function undoMove() {
-	if (game.history().length > 1) {
+	if ((side === 'black' && game.turn() === 'b') || (side === 'white' && game.turn() === 'w'))
 		future.push(game.undo());
-		future.push(game.undo());
-	}
+	future.push(game.undo());
+	checkButtons();
+	updateStatus();
 	board.position(game.fen());
 }
 
 function redoMove() {
 	game.move(future.pop());
 	game.move(future.pop());
+	checkButtons();
+	updateStatus();
 	board.position(game.fen());
 }
 
@@ -86,21 +124,23 @@ function restart() {
 	future = [];
 	game.reset();
 	board = Chessboard('board', config);
-	if (side === 'black') window.setTimeout(algo(game, board), 250);
+	if (side === 'black') algo(game, board);
+	checkButtons();
+	updateStatus();
 }
 
 function newGame() {
 	future = [];
 	game.reset();
 	board = Chessboard('board', 'start');
-	flipHidden();
+	flipDisplay('playing');
 }
 
-let startGameButton = document.body.querySelector('#start-game');
-let undoButton = document.body.querySelector('#undo');
-let redoButton = document.body.querySelector('#redo');
-let restartButton = document.body.querySelector('#restart');
-let newGameButton = document.body.querySelector('#new-game');
+const startGameButton = document.body.querySelector('#start-game');
+const undoButton = document.body.querySelector('#undo');
+const redoButton = document.body.querySelector('#redo');
+const restartButton = document.body.querySelector('#restart');
+const newGameButton = document.body.querySelector('#new-game');
 undoButton.addEventListener('click', undoMove);
 redoButton.addEventListener('click', redoMove);
 startGameButton.addEventListener('click', startGame);

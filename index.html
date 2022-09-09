@@ -31,11 +31,13 @@
 		></script>
 
 		<!-- my code -->
-		<style rel="stylesheet" type="text/css" href="./styles.css"></style>
+		<link rel="stylesheet" type="text/css" href="./styles.css" />
 		<script type="module" src="./js/script.js" defer></script>
 	</head>
 	<body>
-		<div id="board" style="width: 600px"></div>
+		<div id="title">Chess</div>
+		<div id="description">Play a game of chess with a computer!</div>
+		<div id="board" style="width: 600px; margin-bottom: 10px"></div>
 		<div id="settings-start" class="settings">
 			<fieldset>
 				<legend>Difficulty:</legend>
@@ -61,8 +63,8 @@
 			</fieldset>
 			<button id="start-game" type="button">Start Game</button>
 		</div>
-		<div id="status" hidden></div>
-		<div id="settings-playing" class="settings" hidden>
+		<div id="status"></div>
+		<div id="settings-playing" class="settings">
 			<button id="undo" type="button">Undo</button>
 			<button id="redo" type="button">Redo</button>
 			<button id="restart" type="button">Restart</button>
