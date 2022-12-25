@@ -7,10 +7,12 @@ import Options from './Options';
 function App() {
 	let [opponent, setOpponent] = useState(null);
 	let [boardOrientation, setBoardOrientation] = useState(null);
+	let [difficulty, setDifficulty] = useState('easy');
+	let [playAs, setPlayAs] = useState('black');
 
 	function startGame() {
-		setOpponent(true);
-		setBoardOrientation('black');
+		setOpponent(difficulty);
+		setBoardOrientation(playAs);
 	}
 
 	function endGame() {
@@ -21,7 +23,19 @@ function App() {
 	return (
 		<>
 			<Board opponent={opponent} boardOrientation={boardOrientation} />
-			<>{!opponent ? <Settings startGame={startGame} /> : <Options endGame={endGame} />}</>
+			<>
+				{!opponent ? (
+					<Settings
+						difficulty={difficulty}
+						setDifficulty={setDifficulty}
+						playAs={playAs}
+						setPlayAs={setPlayAs}
+						startGame={startGame}
+					/>
+				) : (
+					<Options endGame={endGame} />
+				)}
+			</>
 		</>
 	);
 }
