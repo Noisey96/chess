@@ -2,7 +2,7 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 
 export default function Options(props) {
-	let endGame = props.endGame;
+	let { endGame } = props;
 
 	return (
 		<Stack direction="horizontal">

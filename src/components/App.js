@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Board from './boards/Board';
+import Board from './Board';
 import Settings from './Settings';
 import Options from './Options';
 
@@ -12,7 +12,8 @@ function App() {
 
 	function startGame() {
 		setOpponent(difficulty);
-		setBoardOrientation(playAs);
+		if (playAs !== 'random') setBoardOrientation(playAs);
+		else setBoardOrientation(Math.random() < 0.5 ? 'black' : 'white');
 	}
 
 	function endGame() {
