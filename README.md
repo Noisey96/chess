@@ -5,7 +5,6 @@ Tomorrow -
 Refactor code (if needed)
 Clear Timeouts (maybe)
 Handle Undos and Redos when the player is last to go (maybe)
-Leverage CSS to format the page
 Fleshout markdown
 
 Future -

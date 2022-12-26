@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 
 import { engines } from '../utilities/engines';
 import { updateState } from '../utilities/functions';
+import './Options.css';
 
 export default function Options(props) {
 	let {
@@ -56,7 +57,7 @@ export default function Options(props) {
 	}
 
 	return (
-		<Stack direction="horizontal">
+		<Stack id="options" direction="horizontal" gap="3">
 			<Button variant="secondary" disabled={game.history().length < 2} onClick={undoMove}>
 				Undo
 			</Button>

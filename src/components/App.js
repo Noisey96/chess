@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Chess } from 'chess.js';
 
+import Title from './Title';
 import Board from './Board';
 import Settings from './Settings';
 import Options from './Options';
@@ -15,6 +16,7 @@ function App() {
 
 	return (
 		<>
+			<Title opponent={opponent} />
 			<Board
 				game={game}
 				setGame={setGame}
@@ -22,7 +24,7 @@ function App() {
 				opponent={opponent}
 				boardOrientation={boardOrientation}
 			/>
-			<>
+			<div>
 				{!opponent ? (
 					<Settings
 						game={game}
@@ -46,7 +48,7 @@ function App() {
 						setBoardOrientation={setBoardOrientation}
 					/>
 				)}
-			</>
+			</div>
 		</>
 	);
 }

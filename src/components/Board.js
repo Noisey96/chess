@@ -44,6 +44,11 @@ export default function Board(props) {
 		<Chessboard
 			arePiecesDraggable={opponent}
 			boardOrientation={boardOrientation}
+			boardWidth="600"
+			customBoardStyle={{
+				border: '2px solid black',
+				borderRadius: '4px',
+			}}
 			onPieceDrop={onDrop}
 			position={game.fen()}
 		/>
