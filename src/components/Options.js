@@ -68,10 +68,11 @@ export default function Options(props) {
 	// restart game
 	function restartGame() {
 		// goes back to the beginning
+		clearTimeout(currentTimeout);
 		updateState(setGame, (game) => {
 			game.reset();
 		});
-		clearTimeout(currentTimeout);
+		setFuture([]);
 
 		// if player has black pieces, perform computer's turn
 		if (boardOrientation === 'black') {
@@ -89,10 +90,11 @@ export default function Options(props) {
 	// ends game
 	function endGame() {
 		// goes back to the beginning
+		clearTimeout(currentTimeout);
 		updateState(setGame, (game) => {
 			game.reset();
 		});
-		clearTimeout(currentTimeout);
+		setFuture([]);
 
 		// resets settings
 		setOpponent(null);
