@@ -7,6 +7,7 @@ import Options from './Options';
 
 function App() {
 	let [game, setGame] = useState(new Chess());
+	let [future, setFuture] = useState([]);
 	let [opponent, setOpponent] = useState(null);
 	let [boardOrientation, setBoardOrientation] = useState(null);
 	let [difficulty, setDifficulty] = useState('easy');
@@ -17,6 +18,7 @@ function App() {
 			<Board
 				game={game}
 				setGame={setGame}
+				setFuture={setFuture}
 				opponent={opponent}
 				boardOrientation={boardOrientation}
 			/>
@@ -36,6 +38,8 @@ function App() {
 					<Options
 						game={game}
 						setGame={setGame}
+						future={future}
+						setFuture={setFuture}
 						opponent={opponent}
 						setOpponent={setOpponent}
 						boardOrientation={boardOrientation}
