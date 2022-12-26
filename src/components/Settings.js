@@ -1,32 +1,38 @@
+// external imports
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 
+// internal imports
 import { engines } from '../utilities/engines';
 import { updateState } from '../utilities/functions';
 import './Settings.css';
 
 export default function Settings(props) {
 	let {
-		game,
-		setGame,
-		setOpponent,
-		setBoardOrientation,
 		difficulty,
 		setDifficulty,
 		playAs,
 		setPlayAs,
+		game,
+		setGame,
+		setOpponent,
+		setBoardOrientation,
 	} = props;
 
+	// handle change to the difficulty form group
 	function onDifficultyChange(event) {
 		setDifficulty(event.target.id);
 	}
 
+	// handle change to the playAs form group
 	function onPlayAsChange(event) {
 		setPlayAs(event.target.id);
 	}
 
+	// begin game
 	function startGame() {
+		// transfer settings to the game
 		let opponent = difficulty;
 		setOpponent(opponent);
 
@@ -35,6 +41,7 @@ export default function Settings(props) {
 			boardOrientation = Math.random() < 0.5 ? 'black' : 'white';
 		setBoardOrientation(boardOrientation);
 
+		// if player has black pieces, perform computer's turn
 		if (boardOrientation === 'black') {
 			setTimeout(() => {
 				let engine = engines[opponent];
@@ -49,7 +56,7 @@ export default function Settings(props) {
 	return (
 		<Stack id="settings" direction="horizontal" gap="5">
 			<Form.Group controlId="difficulty">
-				<Form.Label row>Difficulty:</Form.Label>
+				<Form.Label>Difficulty:</Form.Label>
 				<Form.Check
 					row
 					type="radio"
