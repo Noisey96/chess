@@ -1,8 +1,20 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+import { engines } from '../utilities/engines';
+import { updateState } from '../utilities/functions';
+
 export default function Settings(props) {
-	let { difficulty, setDifficulty, playAs, setPlayAs, startGame } = props;
+	let {
+		game,
+		setGame,
+		setOpponent,
+		setBoardOrientation,
+		difficulty,
+		setDifficulty,
+		playAs,
+		setPlayAs,
+	} = props;
 
 	function onDifficultyChange(event) {
 		setDifficulty(event.target.id);
@@ -10,6 +22,26 @@ export default function Settings(props) {
 
 	function onPlayAsChange(event) {
 		setPlayAs(event.target.id);
+	}
+
+	function startGame() {
+		let opponent = difficulty;
+		setOpponent(opponent);
+
+		let boardOrientation = playAs;
+		if (boardOrientation === 'random')
+			boardOrientation = Math.random() < 0.5 ? 'black' : 'white';
+		setBoardOrientation(boardOrientation);
+
+		if (boardOrientation === 'black') {
+			setTimeout(() => {
+				let engine = engines[opponent];
+				let chosenMove = engine(game, boardOrientation);
+				updateState(setGame, (game) => {
+					game.move(chosenMove);
+				});
+			}, 500);
+		}
 	}
 
 	return (
