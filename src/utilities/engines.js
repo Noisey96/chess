@@ -1,35 +1,29 @@
-export function makeRandomMove(game, board) {
-	if (game.game_over()) {
-		console.log(game.pgn());
-		return;
-	}
+export const engines = {
+	easy: makeRandomMove,
+	medium: preferRandomCapture,
+	hard: lazyMiniMax,
+};
 
+function makeRandomMove(game) {
 	const possibleMoves = game.moves();
 	const randomIdx = Math.floor(Math.random() * possibleMoves.length);
-
-	game.move(possibleMoves[randomIdx]);
-	board.position(game.fen());
+	let chosenMove = possibleMoves[randomIdx];
+	return chosenMove;
 }
 
-export function preferRandomCapture(game, board) {
-	if (game.game_over()) {
-		console.log(game.pgn());
-		return;
-	}
-
+function preferRandomCapture(game) {
 	const possibleMoves = game.moves();
 	const possibleCaptures = possibleMoves.filter((m) => m.includes('x'));
 
-	let randomIdx;
+	let randomIdx, chosenMove;
 	if (possibleCaptures.length) {
 		randomIdx = Math.floor(Math.random() * possibleCaptures.length);
-		game.move(possibleCaptures[randomIdx]);
+		chosenMove = possibleCaptures[randomIdx];
 	} else {
 		randomIdx = Math.floor(Math.random() * possibleMoves.length);
-		game.move(possibleMoves[randomIdx]);
+		chosenMove = possibleMoves[randomIdx];
 	}
-
-	board.position(game.fen());
+	return chosenMove;
 }
 
 const values = {
@@ -47,21 +41,16 @@ const values = {
 	K: 10000,
 };
 
-function subtractPieces(fen, player) {
+function subtractPieces(fen, boardOrientation) {
 	const positions = fen.split(' ')[0].split('');
 	const valueForWhite = positions.reduce((t, v) => {
 		const value = values[v] ?? 0;
 		return t + value;
 	}, 0);
-	return player === 'w' ? valueForWhite : -valueForWhite;
+	return boardOrientation === 'black' ? valueForWhite : -valueForWhite;
 }
 
-export function lazyMiniMax(game, board) {
-	if (game.game_over()) {
-		console.log(game.pgn());
-		return;
-	}
-
+function lazyMiniMax(game, boardOrientation) {
 	const possibleMoves = game.moves();
 	let max = Number.NEGATIVE_INFINITY,
 		maxIdxs;
@@ -70,7 +59,7 @@ export function lazyMiniMax(game, board) {
 		game.move(m);
 		const possibleFen = game.fen();
 		game.undo();
-		const curValue = subtractPieces(possibleFen, game.turn());
+		const curValue = subtractPieces(possibleFen, boardOrientation);
 		if (curValue > max) {
 			max = curValue;
 			maxIdxs = [i];
@@ -78,7 +67,5 @@ export function lazyMiniMax(game, board) {
 	}
 	const chosenIdx = maxIdxs[Math.floor(Math.random() * maxIdxs.length)];
 	const chosenMove = possibleMoves[chosenIdx];
-
-	game.move(chosenMove);
-	board.position(game.fen());
+	return chosenMove;
 }
