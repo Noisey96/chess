@@ -58,7 +58,6 @@ export default function Settings(props) {
 			<Form.Group controlId="difficulty">
 				<Form.Label>Difficulty:</Form.Label>
 				<Form.Check
-					row
 					type="radio"
 					name="difficulty"
 					id="easy"
