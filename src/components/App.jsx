@@ -1,8 +1,5 @@
-// external imports
 import { useState } from 'react';
 import { Chess } from 'chess.js';
-
-// internal imports
 import Title from './Title';
 import Board from './Board';
 import Settings from './Settings';

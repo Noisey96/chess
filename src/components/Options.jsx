@@ -1,8 +1,5 @@
-// external imports
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-
-// internal imports
 import { engines } from '../utilities/engines';
 import { updateState } from '../utilities/functions';
 import './Options.css';

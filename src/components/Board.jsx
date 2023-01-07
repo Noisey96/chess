@@ -1,7 +1,4 @@
-// external imports
 import { Chessboard } from 'react-chessboard';
-
-// internal imports
 import { engines } from '../utilities/engines';
 import { updateState } from '../utilities/functions';
 
