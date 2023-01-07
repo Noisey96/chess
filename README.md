@@ -28,11 +28,12 @@ I found an article on chess engines, so I wanted to work on my own. Originally, 
 -   [This article](https://www.chessengines.org/) for the original inspiration.
 -   Tools used in building this project:
     1. [Create React App](https://create-react-app.dev/)
-    2. [Vite](https://vitejs.dev/)
-    3. [react-chessboard](https://www.npmjs.com/package/react-chessboard)
-    4. [react-bootstrap](https://react-bootstrap.github.io/)
+    2. [react-chessboard](https://www.npmjs.com/package/react-chessboard)
+    3. [react-bootstrap](https://react-bootstrap.github.io/)
+    4. [Vite](https://vitejs.dev/)
     5. Various VS Code Extensions including...
         - [Console Ninja](https://marketplace.visualstudio.com/items?itemName=WallabyJs.console-ninja)
         - [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
+        - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
         - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
         - [Tabnine](https://marketplace.visualstudio.com/items?itemName=TabNine.tabnine-vscode)
