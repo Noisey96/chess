@@ -6,16 +6,7 @@ import { engines } from '../utilities/engines';
 import './Settings.css';
 
 export default function Settings(props) {
-	let {
-		difficulty,
-		setDifficulty,
-		playAs,
-		setPlayAs,
-		game,
-		setGame,
-		setOpponent,
-		setBoardOrientation,
-	} = props;
+	let { game, setGame, setPlaying, difficulty, setDifficulty, playingAs, setPlayingAs } = props;
 
 	// handle change to the difficulty form group
 	function onDifficultyChange(event) {
@@ -23,26 +14,21 @@ export default function Settings(props) {
 	}
 
 	// handle change to the playAs form group
-	function onPlayAsChange(event) {
-		setPlayAs(event.target.id);
+	function onPlayingAsChange(event) {
+		let choice = event.target.id;
+		if (choice === 'random') choice = Math.random() < 0.5 ? 'black' : 'white';
+		setPlayingAs(choice);
 	}
 
 	// begin game
 	function startGame() {
-		// transfer settings to the game
-		let opponent = difficulty;
-		setOpponent(opponent);
-
-		let boardOrientation = playAs;
-		if (boardOrientation === 'random')
-			boardOrientation = Math.random() < 0.5 ? 'black' : 'white';
-		setBoardOrientation(boardOrientation);
+		setPlaying(true);
 
 		// if player has black pieces, perform computer's turn
-		if (boardOrientation === 'black') {
+		if (playingAs === 'black') {
 			setTimeout(() => {
-				let engine = engines[opponent];
-				let chosenMove = engine(game, boardOrientation);
+				let engine = engines[difficulty];
+				let chosenMove = engine(game, playingAs);
 				let nextGame = new Chess(game.fen());
 				nextGame.move(chosenMove);
 				setGame(nextGame);
@@ -86,24 +72,24 @@ export default function Settings(props) {
 					name="play-as"
 					id="black"
 					label="Black"
-					checked={playAs === 'black'}
-					onChange={onPlayAsChange}
+					checked={playingAs === 'black'}
+					onChange={onPlayingAsChange}
 				/>
 				<Form.Check
 					type="radio"
 					name="play-as"
 					id="white"
 					label="White"
-					checked={playAs === 'white'}
-					onChange={onPlayAsChange}
+					checked={playingAs === 'white'}
+					onChange={onPlayingAsChange}
 				/>
 				<Form.Check
 					type="radio"
 					name="play-as"
 					id="random"
 					label="Random"
-					checked={playAs === 'random'}
-					onChange={onPlayAsChange}
+					checked={playingAs === 'random'}
+					onChange={onPlayingAsChange}
 				/>
 			</Form.Group>
 			<Button size="lg" onClick={startGame}>

@@ -1,50 +1,58 @@
 import { useState } from 'react';
 import { Chess } from 'chess.js';
+import { Chessboard } from 'react-chessboard';
 import Title from './Title';
 import Board from './Board';
 import Settings from './Settings';
 import Options from './Options';
 
 function App() {
-	// state for settings
-	let [difficulty, setDifficulty] = useState('easy');
-	let [playAs, setPlayAs] = useState('black');
-
-	// state for game
 	let [game, setGame] = useState(new Chess());
-	let [opponent, setOpponent] = useState(null);
-	let [boardOrientation, setBoardOrientation] = useState(null);
+	let [playing, setPlaying] = useState(false);
+	let [difficulty, setDifficulty] = useState('easy');
+	let [playingAs, setPlayingAs] = useState('black');
 	let [currentTimeout, setCurrentTimeout] = useState(null);
 
 	return (
 		<>
-			<Title opponent={opponent} />
-			<Board
-				game={game}
-				setGame={setGame}
-				opponent={opponent}
-				boardOrientation={boardOrientation}
-				setCurrentTimeout={setCurrentTimeout}
-			/>
-			<div>
-				{!opponent ? (
-					<Settings
-						difficulty={difficulty}
-						setDifficulty={setDifficulty}
-						playAs={playAs}
-						setPlayAs={setPlayAs}
+			<Title playing={playing} />
+			<>
+				{!playing ? (
+					<Chessboard
+						boardWidth="600"
+						customBoardStyle={{
+							border: '2px solid black',
+							borderRadius: '4px',
+						}}
+						arePiecesDraggable={false}
+					/>
+				) : (
+					<Board
 						game={game}
 						setGame={setGame}
-						setOpponent={setOpponent}
-						setBoardOrientation={setBoardOrientation}
+						difficulty={difficulty}
+						playingAs={playingAs}
+						setCurrentTimeout={setCurrentTimeout}
+					/>
+				)}
+			</>
+			<div>
+				{!playing ? (
+					<Settings
+						game={game}
+						setGame={setGame}
+						setPlaying={setPlaying}
+						difficulty={difficulty}
+						setDifficulty={setDifficulty}
+						playingAs={playingAs}
+						setPlayingAs={setPlayingAs}
 					/>
 				) : (
 					<Options
 						setGame={setGame}
-						opponent={opponent}
-						setOpponent={setOpponent}
-						boardOrientation={boardOrientation}
-						setBoardOrientation={setBoardOrientation}
+						setPlaying={setPlaying}
+						difficulty={difficulty}
+						playingAs={playingAs}
 						currentTimeout={currentTimeout}
 						setCurrentTimeout={setCurrentTimeout}
 					/>

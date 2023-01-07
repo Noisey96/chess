@@ -3,7 +3,7 @@ import { Chessboard } from 'react-chessboard';
 import { engines } from '../utilities/engines';
 
 export default function Board(props) {
-	let { game, setGame, opponent, boardOrientation, setCurrentTimeout } = props;
+	let { game, setGame, difficulty, playingAs, setCurrentTimeout } = props;
 
 	// player's turn
 	function onDrop(start, end) {
@@ -41,8 +41,8 @@ export default function Board(props) {
 			}
 
 			// perform move
-			let engine = engines[opponent];
-			let chosenMove = engine(game, boardOrientation);
+			let engine = engines[difficulty];
+			let chosenMove = engine(game, playingAs);
 			let nextGame = new Chess(game.fen());
 			nextGame.move(chosenMove);
 			return nextGame;
@@ -56,8 +56,8 @@ export default function Board(props) {
 				border: '2px solid black',
 				borderRadius: '4px',
 			}}
-			arePiecesDraggable={opponent}
-			boardOrientation={boardOrientation}
+			arePiecesDraggable={difficulty}
+			boardOrientation={playingAs}
 			position={game.fen()}
 			onPieceDrop={onDrop}
 		/>
