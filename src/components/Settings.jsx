@@ -1,8 +1,8 @@
+import { Chess } from 'chess.js';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 import { engines } from '../utilities/engines';
-import { updateState } from '../utilities/functions';
 import './Settings.css';
 
 export default function Settings(props) {
@@ -43,9 +43,9 @@ export default function Settings(props) {
 			setTimeout(() => {
 				let engine = engines[opponent];
 				let chosenMove = engine(game, boardOrientation);
-				updateState(setGame, (game) => {
-					game.move(chosenMove);
-				});
+				let nextGame = new Chess(game.fen());
+				nextGame.move(chosenMove);
+				setGame(nextGame);
 			}, 500);
 		}
 	}

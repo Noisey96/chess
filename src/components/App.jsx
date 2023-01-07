@@ -15,7 +15,6 @@ function App() {
 	let [opponent, setOpponent] = useState(null);
 	let [boardOrientation, setBoardOrientation] = useState(null);
 	let [currentTimeout, setCurrentTimeout] = useState(null);
-	let [future, setFuture] = useState([]);
 
 	return (
 		<>
@@ -26,7 +25,6 @@ function App() {
 				opponent={opponent}
 				boardOrientation={boardOrientation}
 				setCurrentTimeout={setCurrentTimeout}
-				setFuture={setFuture}
 			/>
 			<div>
 				{!opponent ? (
@@ -42,7 +40,6 @@ function App() {
 					/>
 				) : (
 					<Options
-						game={game}
 						setGame={setGame}
 						opponent={opponent}
 						setOpponent={setOpponent}
@@ -50,8 +47,6 @@ function App() {
 						setBoardOrientation={setBoardOrientation}
 						currentTimeout={currentTimeout}
 						setCurrentTimeout={setCurrentTimeout}
-						future={future}
-						setFuture={setFuture}
 					/>
 				)}
 			</div>
