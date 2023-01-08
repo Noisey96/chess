@@ -3,10 +3,13 @@ import { Chessboard } from 'react-chessboard';
 import { engines } from '../utilities/engines';
 
 export default function Board(props) {
-	let { game, setGame, difficulty, playingAs, setCurrentTimeout } = props;
+	let { history, setHistory, difficulty, playingAs, setCurrentTimeout } = props;
 
 	// player's turn
 	function onDrop(start, end) {
+		console.log(history);
+		let game = new Chess(history[history.length - 1]);
+
 		// check for endgame scenarios
 		const possibleMoves = game.moves();
 		if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
@@ -15,24 +18,25 @@ export default function Board(props) {
 		}
 
 		// perform move
-		let nextGame = new Chess(game.fen());
-		const move = nextGame.move({
+		const move = game.move({
 			from: start,
 			to: end,
 		});
-		setGame(nextGame);
 
 		// move failed
 		if (move === null) return false;
 
 		// move succeeded
+		setHistory([...history, game.fen()]);
 		const newTimeout = setTimeout(computerTurn, 500);
 		setCurrentTimeout(newTimeout);
 		return true;
 	}
 
 	function computerTurn() {
-		setGame((game) => {
+		setHistory((history) => {
+			let game = new Chess(history[history.length - 1]);
+
 			// check for endgame scenarios
 			const possibleMoves = game.moves();
 			if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
@@ -43,9 +47,8 @@ export default function Board(props) {
 			// perform move
 			let engine = engines[difficulty];
 			let chosenMove = engine(game, playingAs);
-			let nextGame = new Chess(game.fen());
-			nextGame.move(chosenMove);
-			return nextGame;
+			game.move(chosenMove);
+			return [...history, game.fen()];
 		});
 	}
 
@@ -58,7 +61,7 @@ export default function Board(props) {
 			}}
 			arePiecesDraggable={difficulty}
 			boardOrientation={playingAs}
-			position={game.fen()}
+			position={history[history.length - 1]}
 			onPieceDrop={onDrop}
 		/>
 	);

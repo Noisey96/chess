@@ -6,7 +6,8 @@ import { engines } from '../utilities/engines';
 import './Settings.css';
 
 export default function Settings(props) {
-	let { game, setGame, setPlaying, difficulty, setDifficulty, playingAs, setPlayingAs } = props;
+	let { history, setHistory, setPlaying, difficulty, setDifficulty, playingAs, setPlayingAs } =
+		props;
 
 	// handle change to the difficulty form group
 	function onDifficultyChange(event) {
@@ -27,11 +28,11 @@ export default function Settings(props) {
 		// if player has black pieces, perform computer's turn
 		if (playingAs === 'black') {
 			setTimeout(() => {
-				let engine = engines[difficulty];
+				let game = new Chess(),
+					engine = engines[difficulty];
 				let chosenMove = engine(game, playingAs);
-				let nextGame = new Chess(game.fen());
-				nextGame.move(chosenMove);
-				setGame(nextGame);
+				game.move(chosenMove);
+				setHistory([...history, game.fen()]);
 			}, 500);
 		}
 	}

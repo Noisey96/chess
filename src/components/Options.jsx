@@ -5,36 +5,35 @@ import { engines } from '../utilities/engines';
 import './Options.css';
 
 export default function Options(props) {
-	let { setGame, setPlaying, difficulty, playingAs, currentTimeout, setCurrentTimeout } = props;
+	let { setHistory, setPlaying, difficulty, playingAs, currentTimeout, setCurrentTimeout } =
+		props;
 
 	// restart game
 	function restartGame() {
 		// goes back to the beginning
 		clearTimeout(currentTimeout);
-		let nextGame = new Chess();
-		setGame(nextGame);
+		let game = new Chess(),
+			newHistory = [game.fen()];
 
 		// if player has black pieces, perform computer's turn
 		if (playingAs === 'black') {
-			const newTimeout = setTimeout(
-				setGame((game) => {
-					let engine = engines[difficulty];
-					let chosenMove = engine(game, playingAs);
-					let nextGame = new Chess(game.fen());
-					nextGame.move(chosenMove);
-					setGame(nextGame);
-				}),
-				500
-			);
+			const newTimeout = setTimeout(() => {
+				let engine = engines[difficulty];
+				let chosenMove = engine(game, playingAs);
+				game.move(chosenMove);
+				newHistory = [...newHistory, game.fen()];
+				setHistory(newHistory);
+			}, 250);
 			setCurrentTimeout(newTimeout);
+		} else {
+			setHistory(newHistory);
 		}
 	}
 
 	// ends game
 	function endGame() {
 		clearTimeout(currentTimeout);
-		let nextGame = new Chess();
-		setGame(nextGame);
+		setHistory([new Chess().fen()]);
 		setPlaying(false);
 	}
 
