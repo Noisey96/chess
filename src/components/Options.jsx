@@ -1,32 +1,20 @@
-import { Chess } from 'chess.js';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-import { engines } from '../utilities/engines';
 import './Options.css';
 
 export default function Options(props) {
-	let { setHistory, difficulty, playingAs, currentTimeout, setCurrentTimeout, onNewGame } = props;
+	let { onUndo, onRedo, onRestart, onNewGame } = props;
 
-	// restart game
-	function restartGame() {
-		// goes back to the beginning
-		clearTimeout(currentTimeout);
-		let game = new Chess(),
-			newHistory = [game.fen()];
+	function handleUndoClick() {
+		onUndo();
+	}
 
-		// if player has black pieces, perform computer's turn
-		if (playingAs === 'black') {
-			const newTimeout = setTimeout(() => {
-				let engine = engines[difficulty];
-				let chosenMove = engine(game, playingAs);
-				game.move(chosenMove);
-				newHistory = [...newHistory, game.fen()];
-				setHistory(newHistory);
-			}, 250);
-			setCurrentTimeout(newTimeout);
-		} else {
-			setHistory(newHistory);
-		}
+	function handleRedoClick() {
+		onRedo();
+	}
+
+	function handleRestartClick() {
+		onRestart();
 	}
 
 	function handleNewGameClick() {
@@ -35,13 +23,13 @@ export default function Options(props) {
 
 	return (
 		<Stack id="options" direction="horizontal" gap="3">
-			<Button variant="secondary" disabled={true}>
+			<Button variant="secondary" disabled={true} onClick={handleUndoClick}>
 				Undo
 			</Button>
-			<Button variant="secondary" disabled={true}>
+			<Button variant="secondary" disabled={true} onClick={handleRedoClick}>
 				Redo
 			</Button>
-			<Button variant="warning" onClick={restartGame}>
+			<Button variant="warning" onClick={handleRestartClick}>
 				Restart
 			</Button>
 			<Button variant="danger" onClick={handleNewGameClick}>

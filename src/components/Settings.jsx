@@ -4,18 +4,14 @@ import Stack from 'react-bootstrap/Stack';
 import './Settings.css';
 
 export default function Settings(props) {
-	let { difficulty, setDifficulty, playingAs, setPlayingAs, onStart } = props;
+	let { difficulty, playingAs, onSettingsChange, onStart } = props;
 
-	// handle change to the difficulty form group
 	function handleDifficultyChange(event) {
-		setDifficulty(event.target.id);
+		onSettingsChange(event);
 	}
 
-	// handle change to the playAs form group
 	function handlePlayingAsChange(event) {
-		let choice = event.target.id;
-		if (choice === 'random') choice = Math.random() < 0.5 ? 'black' : 'white';
-		setPlayingAs(choice);
+		onSettingsChange(event);
 	}
 
 	function handleStartClick() {
@@ -51,11 +47,11 @@ export default function Settings(props) {
 					onChange={handleDifficultyChange}
 				/>
 			</Form.Group>
-			<Form.Group controlId="playAs">
+			<Form.Group controlId="playingAs">
 				<Form.Label>Play As:</Form.Label>
 				<Form.Check
 					type="radio"
-					name="play-as"
+					name="playingAs"
 					id="black"
 					label="Black"
 					checked={playingAs === 'black'}
@@ -63,18 +59,10 @@ export default function Settings(props) {
 				/>
 				<Form.Check
 					type="radio"
-					name="play-as"
+					name="playingAs"
 					id="white"
 					label="White"
 					checked={playingAs === 'white'}
-					onChange={handlePlayingAsChange}
-				/>
-				<Form.Check
-					type="radio"
-					name="play-as"
-					id="random"
-					label="Random"
-					checked={playingAs === 'random'}
 					onChange={handlePlayingAsChange}
 				/>
 			</Form.Group>
