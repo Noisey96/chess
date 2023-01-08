@@ -5,13 +5,39 @@ import Title from './Title';
 import Board from './Board';
 import Settings from './Settings';
 import Options from './Options';
+import { engines } from '../utilities/engines';
+
+let game = new Chess();
 
 function App() {
-	let [history, setHistory] = useState([new Chess().fen()]);
+	let [history, setHistory] = useState([game.fen()]);
 	let [playing, setPlaying] = useState(false);
 	let [difficulty, setDifficulty] = useState('easy');
 	let [playingAs, setPlayingAs] = useState('black');
 	let [currentTimeout, setCurrentTimeout] = useState(null);
+
+	// starts the game
+	function handleStart() {
+		setPlaying(true);
+
+		// if player has black pieces, perform computer's turn
+		if (playingAs === 'black') {
+			setTimeout(() => {
+				let engine = engines[difficulty];
+				let chosenMove = engine(game, playingAs);
+				game.move(chosenMove);
+				setHistory([...history, game.fen()]);
+			}, 500);
+		}
+	}
+
+	// ends the game
+	function handleNewGame() {
+		clearTimeout(currentTimeout);
+		game.reset();
+		setHistory([game.fen()]);
+		setPlaying(false);
+	}
 
 	return (
 		<>
@@ -39,23 +65,20 @@ function App() {
 			<div>
 				{!playing ? (
 					<Settings
-						history={history}
-						setHistory={setHistory}
-						setPlaying={setPlaying}
 						difficulty={difficulty}
 						setDifficulty={setDifficulty}
 						playingAs={playingAs}
 						setPlayingAs={setPlayingAs}
+						onStart={handleStart}
 					/>
 				) : (
 					<Options
-						history={history}
 						setHistory={setHistory}
-						setPlaying={setPlaying}
 						difficulty={difficulty}
 						playingAs={playingAs}
 						currentTimeout={currentTimeout}
 						setCurrentTimeout={setCurrentTimeout}
+						onNewGame={handleNewGame}
 					/>
 				)}
 			</div>

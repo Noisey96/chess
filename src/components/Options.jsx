@@ -5,8 +5,7 @@ import { engines } from '../utilities/engines';
 import './Options.css';
 
 export default function Options(props) {
-	let { setHistory, setPlaying, difficulty, playingAs, currentTimeout, setCurrentTimeout } =
-		props;
+	let { setHistory, difficulty, playingAs, currentTimeout, setCurrentTimeout, onNewGame } = props;
 
 	// restart game
 	function restartGame() {
@@ -30,11 +29,8 @@ export default function Options(props) {
 		}
 	}
 
-	// ends game
-	function endGame() {
-		clearTimeout(currentTimeout);
-		setHistory([new Chess().fen()]);
-		setPlaying(false);
+	function handleNewGameClick() {
+		onNewGame();
 	}
 
 	return (
@@ -48,7 +44,7 @@ export default function Options(props) {
 			<Button variant="warning" onClick={restartGame}>
 				Restart
 			</Button>
-			<Button variant="danger" onClick={endGame}>
+			<Button variant="danger" onClick={handleNewGameClick}>
 				New Game
 			</Button>
 		</Stack>

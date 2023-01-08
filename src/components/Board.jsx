@@ -7,7 +7,6 @@ export default function Board(props) {
 
 	// player's turn
 	function onDrop(start, end) {
-		console.log(history);
 		let game = new Chess(history[history.length - 1]);
 
 		// check for endgame scenarios

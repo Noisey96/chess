@@ -1,40 +1,25 @@
-import { Chess } from 'chess.js';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
-import { engines } from '../utilities/engines';
 import './Settings.css';
 
 export default function Settings(props) {
-	let { history, setHistory, setPlaying, difficulty, setDifficulty, playingAs, setPlayingAs } =
-		props;
+	let { difficulty, setDifficulty, playingAs, setPlayingAs, onStart } = props;
 
 	// handle change to the difficulty form group
-	function onDifficultyChange(event) {
+	function handleDifficultyChange(event) {
 		setDifficulty(event.target.id);
 	}
 
 	// handle change to the playAs form group
-	function onPlayingAsChange(event) {
+	function handlePlayingAsChange(event) {
 		let choice = event.target.id;
 		if (choice === 'random') choice = Math.random() < 0.5 ? 'black' : 'white';
 		setPlayingAs(choice);
 	}
 
-	// begin game
-	function startGame() {
-		setPlaying(true);
-
-		// if player has black pieces, perform computer's turn
-		if (playingAs === 'black') {
-			setTimeout(() => {
-				let game = new Chess(),
-					engine = engines[difficulty];
-				let chosenMove = engine(game, playingAs);
-				game.move(chosenMove);
-				setHistory([...history, game.fen()]);
-			}, 500);
-		}
+	function handleStartClick() {
+		onStart();
 	}
 
 	return (
@@ -47,7 +32,7 @@ export default function Settings(props) {
 					id="easy"
 					label="Easy"
 					checked={difficulty === 'easy'}
-					onChange={onDifficultyChange}
+					onChange={handleDifficultyChange}
 				/>
 				<Form.Check
 					type="radio"
@@ -55,7 +40,7 @@ export default function Settings(props) {
 					id="medium"
 					label="Medium"
 					checked={difficulty === 'medium'}
-					onChange={onDifficultyChange}
+					onChange={handleDifficultyChange}
 				/>
 				<Form.Check
 					type="radio"
@@ -63,7 +48,7 @@ export default function Settings(props) {
 					id="hard"
 					label="Hard"
 					checked={difficulty === 'hard'}
-					onChange={onDifficultyChange}
+					onChange={handleDifficultyChange}
 				/>
 			</Form.Group>
 			<Form.Group controlId="playAs">
@@ -74,7 +59,7 @@ export default function Settings(props) {
 					id="black"
 					label="Black"
 					checked={playingAs === 'black'}
-					onChange={onPlayingAsChange}
+					onChange={handlePlayingAsChange}
 				/>
 				<Form.Check
 					type="radio"
@@ -82,7 +67,7 @@ export default function Settings(props) {
 					id="white"
 					label="White"
 					checked={playingAs === 'white'}
-					onChange={onPlayingAsChange}
+					onChange={handlePlayingAsChange}
 				/>
 				<Form.Check
 					type="radio"
@@ -90,11 +75,11 @@ export default function Settings(props) {
 					id="random"
 					label="Random"
 					checked={playingAs === 'random'}
-					onChange={onPlayingAsChange}
+					onChange={handlePlayingAsChange}
 				/>
 			</Form.Group>
-			<Button size="lg" onClick={startGame}>
-				Start Game
+			<Button size="lg" onClick={handleStartClick}>
+				Start
 			</Button>
 		</Stack>
 	);
