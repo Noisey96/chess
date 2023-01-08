@@ -9,10 +9,11 @@ import { engines } from '../utilities/engines';
 let game = new Chess();
 
 function App() {
-	let [history, setHistory] = useState([game.fen()]);
-	let [playing, setPlaying] = useState(false);
 	let [difficulty, setDifficulty] = useState('easy');
 	let [playingAs, setPlayingAs] = useState('black');
+	let [playing, setPlaying] = useState(false);
+	let [history, setHistory] = useState([game.fen()]);
+	let [currentMove, setCurrentMove] = useState(0);
 	let [currentTimeout, setCurrentTimeout] = useState(null);
 
 	// changes the changed setting
@@ -28,13 +29,12 @@ function App() {
 
 		// if player has black pieces, perform computer's turn
 		if (playingAs === 'black') {
-			const newTimeout = setTimeout(() => {
-				let engine = engines[difficulty];
-				let chosenMove = engine(game, playingAs);
-				game.move(chosenMove);
-				setHistory([...history, game.fen()]);
-			}, 500);
-			setCurrentTimeout(newTimeout);
+			const engine = engines[difficulty];
+			const chosenMove = engine(game, playingAs);
+			game.move(chosenMove);
+			const nextHistory = [...history, game.fen()];
+			setHistory(nextHistory);
+			setCurrentMove(nextHistory.length - 1);
 		}
 	}
 
@@ -57,7 +57,9 @@ function App() {
 		if (move === null) return false;
 
 		// move succeeded
-		setHistory([...history, game.fen()]);
+		let newHistory = [...history, game.fen()];
+		setHistory(newHistory);
+		setCurrentMove(newHistory.length - 1);
 		const newTimeout = setTimeout(computerTurn, 500);
 		setCurrentTimeout(newTimeout);
 		return true;
@@ -65,27 +67,33 @@ function App() {
 
 	// performs the computer's turn
 	function computerTurn() {
-		setHistory((history) => {
-			// check for endgame scenarios
-			const possibleMoves = game.moves();
-			if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
-				console.log(game.pgn());
-				return;
-			}
+		// check for endgame scenarios
+		const possibleMoves = game.moves();
+		if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
+			console.log(game.pgn());
+			return;
+		}
 
-			// perform move
-			let engine = engines[difficulty];
-			let chosenMove = engine(game, playingAs);
-			game.move(chosenMove);
-			return [...history, game.fen()];
+		// perform move
+		let engine = engines[difficulty];
+		let chosenMove = engine(game, playingAs);
+		game.move(chosenMove);
+		setHistory((history) => {
+			const nextHistory = [...history, game.fen()];
+			setCurrentMove(nextHistory.length - 1);
+			return nextHistory;
 		});
 	}
 
 	// undos the player's last move
-	function handleUndo() {}
+	function handleUndo() {
+		setCurrentMove(currentMove - 1);
+	}
 
 	// redos the player's last move
-	function handleRedo() {}
+	function handleRedo() {
+		setCurrentMove(currentMove + 1);
+	}
 
 	// restarts the game
 	function handleRestart() {
@@ -96,24 +104,22 @@ function App() {
 
 		// if player has black pieces, perform computer's turn
 		if (playingAs === 'black') {
-			const newTimeout = setTimeout(() => {
-				let engine = engines[difficulty];
-				let chosenMove = engine(game, playingAs);
-				game.move(chosenMove);
-				newHistory = [...newHistory, game.fen()];
-				setHistory(newHistory);
-			}, 250);
-			setCurrentTimeout(newTimeout);
-		} else {
-			setHistory(newHistory);
+			let engine = engines[difficulty];
+			let chosenMove = engine(game, playingAs);
+			game.move(chosenMove);
+			newHistory = [...newHistory, game.fen()];
 		}
+		setHistory(newHistory);
+		setCurrentMove(newHistory.length - 1);
 	}
 
 	// ends the game
 	function handleNewGame() {
 		clearTimeout(currentTimeout);
 		game.reset();
-		setHistory([game.fen()]);
+		let newHistory = [game.fen()];
+		setHistory(newHistory);
+		setCurrentMove(newHistory.length - 1);
 		setPlaying(false);
 	}
 
@@ -128,7 +134,7 @@ function App() {
 				}}
 				arePiecesDraggable={playing}
 				boardOrientation={!playing ? 'white' : playingAs}
-				position={history[history.length - 1]}
+				position={history[currentMove]}
 				onPieceDrop={handlePieceDrop}
 			/>
 			<div>
@@ -141,6 +147,8 @@ function App() {
 					/>
 				) : (
 					<Options
+						history={history}
+						currentMove={currentMove}
 						onUndo={handleUndo}
 						onRedo={handleRedo}
 						onRestart={handleRestart}
