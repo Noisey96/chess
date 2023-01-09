@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import './Options.css';
 
 export default function Options(props) {
-	let { history, currentMove, onUndo, onRedo, onRestart, onNewGame } = props;
+	let { history, future, onUndo, onRedo, onRestart, onNewGame } = props;
 
 	function handleUndoClick() {
 		onUndo();
@@ -26,11 +26,7 @@ export default function Options(props) {
 			<Button variant="secondary" disabled={history.length < 2} onClick={handleUndoClick}>
 				Undo
 			</Button>
-			<Button
-				variant="secondary"
-				disabled={currentMove === history.length - 1}
-				onClick={handleRedoClick}
-			>
+			<Button variant="secondary" disabled={!future.length} onClick={handleRedoClick}>
 				Redo
 			</Button>
 			<Button variant="warning" onClick={handleRestartClick}>

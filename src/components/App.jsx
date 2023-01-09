@@ -12,8 +12,8 @@ function App() {
 	let [difficulty, setDifficulty] = useState('easy');
 	let [playingAs, setPlayingAs] = useState('black');
 	let [playing, setPlaying] = useState(false);
-	let [history, setHistory] = useState([game.fen()]);
-	let [currentMove, setCurrentMove] = useState(0);
+	let [gameState, setGameState] = useState({ position: game.fen(), history: game.history() });
+	let [future, setFuture] = useState([]);
 	let [currentTimeout, setCurrentTimeout] = useState(null);
 
 	// changes the changed setting
@@ -32,9 +32,7 @@ function App() {
 			const engine = engines[difficulty];
 			const chosenMove = engine(game, playingAs);
 			game.move(chosenMove);
-			const nextHistory = [...history, game.fen()];
-			setHistory(nextHistory);
-			setCurrentMove(nextHistory.length - 1);
+			setGameState({ position: game.fen(), history: game.history() });
 		}
 	}
 
@@ -57,9 +55,8 @@ function App() {
 		if (move === null) return false;
 
 		// move succeeded
-		let newHistory = [...history, game.fen()];
-		setHistory(newHistory);
-		setCurrentMove(newHistory.length - 1);
+		setGameState({ position: game.fen(), history: game.history() });
+		setFuture([]);
 		const newTimeout = setTimeout(computerTurn, 500);
 		setCurrentTimeout(newTimeout);
 		return true;
@@ -78,21 +75,36 @@ function App() {
 		let engine = engines[difficulty];
 		let chosenMove = engine(game, playingAs);
 		game.move(chosenMove);
-		setHistory((history) => {
-			const nextHistory = [...history, game.fen()];
-			setCurrentMove(nextHistory.length - 1);
-			return nextHistory;
-		});
+		setGameState({ position: game.fen(), history: game.history() });
 	}
 
 	// undos the player's last move
 	function handleUndo() {
-		setCurrentMove(currentMove - 1);
+		clearTimeout(currentTimeout);
+		setFuture([game.undo(), ...future]);
+		if (playingAs.substring(0, 1) !== game.turn())
+			setFuture((future) => [game.undo(), ...future]);
+		setGameState({ position: game.fen(), history: game.history() });
 	}
 
 	// redos the player's last move
 	function handleRedo() {
-		setCurrentMove(currentMove + 1);
+		// with at least two moves in future, redo both moves
+		if (future.length > 1) {
+			game.move(future[0]);
+			game.move(future[1]);
+			setFuture([...future.slice(2)]);
+		}
+		// with only one move in future, redo one move and perform computer'sturn
+		else {
+			game.move(future[0]);
+			setFuture([]);
+
+			let engine = engines[difficulty];
+			let chosenMove = engine(game, playingAs);
+			game.move(chosenMove);
+		}
+		setGameState({ position: game.fen(), history: game.history() });
 	}
 
 	// restarts the game
@@ -100,26 +112,23 @@ function App() {
 		// goes back to the beginning
 		clearTimeout(currentTimeout);
 		game.reset();
-		let newHistory = [game.fen()];
 
 		// if player has black pieces, perform computer's turn
 		if (playingAs === 'black') {
 			let engine = engines[difficulty];
 			let chosenMove = engine(game, playingAs);
 			game.move(chosenMove);
-			newHistory = [...newHistory, game.fen()];
 		}
-		setHistory(newHistory);
-		setCurrentMove(newHistory.length - 1);
+		setGameState({ position: game.fen(), history: game.history() });
+		setFuture([]);
 	}
 
 	// ends the game
 	function handleNewGame() {
 		clearTimeout(currentTimeout);
 		game.reset();
-		let newHistory = [game.fen()];
-		setHistory(newHistory);
-		setCurrentMove(newHistory.length - 1);
+		setGameState({ position: game.fen(), history: game.history() });
+		setFuture([]);
 		setPlaying(false);
 	}
 
@@ -134,7 +143,7 @@ function App() {
 				}}
 				arePiecesDraggable={playing}
 				boardOrientation={!playing ? 'white' : playingAs}
-				position={history[currentMove]}
+				position={gameState.position}
 				onPieceDrop={handlePieceDrop}
 			/>
 			<div>
@@ -147,8 +156,8 @@ function App() {
 					/>
 				) : (
 					<Options
-						history={history}
-						currentMove={currentMove}
+						history={gameState.history}
+						future={future}
 						onUndo={handleUndo}
 						onRedo={handleRedo}
 						onRestart={handleRestart}
