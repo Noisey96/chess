@@ -1,5 +1,3 @@
-import './Title.css';
-
 export default function Title(props) {
 	let { playing } = props;
 	return (

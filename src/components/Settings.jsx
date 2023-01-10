@@ -1,7 +1,6 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
-import './Settings.css';
 
 export default function Settings(props) {
 	let { difficulty, playingAs, onSettingsChange, onStart } = props;

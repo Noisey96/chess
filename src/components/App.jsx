@@ -59,7 +59,7 @@ function App() {
 		// move succeeded
 		setGame(nextGame);
 		setFuture([]);
-		const newTimeout = setTimeout(computerTurn, 2500);
+		const newTimeout = setTimeout(computerTurn, 500);
 		timeoutRef.current = newTimeout;
 		return true;
 	}

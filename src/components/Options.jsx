@@ -1,6 +1,5 @@
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
-import './Options.css';
 
 export default function Options(props) {
 	let { history, future, onUndo, onRedo, onRestart, onNewGame } = props;
