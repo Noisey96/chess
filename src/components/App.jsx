@@ -1,20 +1,18 @@
 import { Chess } from 'chess.js';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import Title from './Title';
 import Settings from './Settings';
 import Options from './Options';
 import { engines } from '../utilities/engines';
 
-let game = new Chess();
-
 function App() {
 	let [difficulty, setDifficulty] = useState('easy');
 	let [playingAs, setPlayingAs] = useState('black');
 	let [playing, setPlaying] = useState(false);
-	let [gameState, setGameState] = useState({ position: game.fen(), history: game.history() });
+	let [game, setGame] = useState(new Chess());
 	let [future, setFuture] = useState([]);
-	let [currentTimeout, setCurrentTimeout] = useState(null);
+	let timeoutRef = useRef(null);
 
 	// changes the changed setting
 	function handleSettingsChange(event) {
@@ -31,8 +29,10 @@ function App() {
 		if (playingAs === 'black') {
 			const engine = engines[difficulty];
 			const chosenMove = engine(game, playingAs);
-			game.move(chosenMove);
-			setGameState({ position: game.fen(), history: game.history() });
+			let nextGame = new Chess();
+			nextGame.loadPgn(game.pgn());
+			nextGame.move(chosenMove);
+			setGame(nextGame);
 		}
 	}
 
@@ -46,7 +46,9 @@ function App() {
 		}
 
 		// perform move
-		const move = game.move({
+		let nextGame = new Chess();
+		nextGame.loadPgn(game.pgn());
+		const move = nextGame.move({
 			from: start,
 			to: end,
 		});
@@ -55,79 +57,95 @@ function App() {
 		if (move === null) return false;
 
 		// move succeeded
-		setGameState({ position: game.fen(), history: game.history() });
+		setGame(nextGame);
 		setFuture([]);
-		const newTimeout = setTimeout(computerTurn, 500);
-		setCurrentTimeout(newTimeout);
+		const newTimeout = setTimeout(computerTurn, 2500);
+		timeoutRef.current = newTimeout;
 		return true;
 	}
 
 	// performs the computer's turn
 	function computerTurn() {
-		// check for endgame scenarios
-		const possibleMoves = game.moves();
-		if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
-			console.log(game.pgn());
-			return;
-		}
+		setGame((game) => {
+			// check for endgame scenarios
+			const possibleMoves = game.moves();
+			if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
+				console.log(game.pgn());
+				return;
+			}
 
-		// perform move
-		let engine = engines[difficulty];
-		let chosenMove = engine(game, playingAs);
-		game.move(chosenMove);
-		setGameState({ position: game.fen(), history: game.history() });
+			// perform move
+			let engine = engines[difficulty];
+			let chosenMove = engine(game, playingAs);
+			let nextGame = new Chess();
+			nextGame.loadPgn(game.pgn());
+			nextGame.move(chosenMove);
+			return nextGame;
+		});
 	}
 
 	// undos the player's last move
 	function handleUndo() {
-		clearTimeout(currentTimeout);
-		setFuture([game.undo(), ...future]);
-		if (playingAs.substring(0, 1) !== game.turn())
-			setFuture((future) => [game.undo(), ...future]);
-		setGameState({ position: game.fen(), history: game.history() });
+		clearTimeout(timeoutRef.current);
+		let nextGame = new Chess();
+		nextGame.loadPgn(game.pgn());
+		let lastMove = nextGame.undo();
+		setFuture([lastMove, ...future]);
+		if (playingAs.substring(0, 1) !== nextGame.turn()) {
+			lastMove = nextGame.undo();
+			setFuture((future) => [lastMove, ...future]);
+		}
+		setGame(nextGame);
 	}
 
 	// redos the player's last move
 	function handleRedo() {
+		let nextGame = new Chess();
+		nextGame.loadPgn(game.pgn());
+
 		// with at least two moves in future, redo both moves
 		if (future.length > 1) {
-			game.move(future[0]);
-			game.move(future[1]);
+			nextGame.move(future[0]);
+			nextGame.move(future[1]);
 			setFuture([...future.slice(2)]);
 		}
 		// with only one move in future, redo one move and perform computer'sturn
 		else {
-			game.move(future[0]);
+			nextGame.move(future[0]);
 			setFuture([]);
 
 			let engine = engines[difficulty];
-			let chosenMove = engine(game, playingAs);
-			game.move(chosenMove);
+			let chosenMove = engine(nextGame, playingAs);
+			nextGame.move(chosenMove);
 		}
-		setGameState({ position: game.fen(), history: game.history() });
+		setGame(nextGame);
 	}
 
 	// restarts the game
 	function handleRestart() {
 		// goes back to the beginning
-		clearTimeout(currentTimeout);
-		game.reset();
+		clearTimeout(timeoutRef.current);
+		let nextGame = new Chess();
+		nextGame.loadPgn(game.pgn());
+		nextGame.reset();
 
 		// if player has black pieces, perform computer's turn
 		if (playingAs === 'black') {
 			let engine = engines[difficulty];
-			let chosenMove = engine(game, playingAs);
-			game.move(chosenMove);
+			let chosenMove = engine(nextGame, playingAs);
+			nextGame.move(chosenMove);
 		}
-		setGameState({ position: game.fen(), history: game.history() });
+		setGame(nextGame);
 		setFuture([]);
 	}
 
 	// ends the game
 	function handleNewGame() {
-		clearTimeout(currentTimeout);
-		game.reset();
-		setGameState({ position: game.fen(), history: game.history() });
+		clearTimeout(timeoutRef.current);
+		let nextGame = new Chess();
+		nextGame.loadPgn(game.pgn());
+		nextGame.reset();
+		setGame(nextGame);
 		setFuture([]);
 		setPlaying(false);
 	}
@@ -143,7 +161,7 @@ function App() {
 				}}
 				arePiecesDraggable={playing}
 				boardOrientation={!playing ? 'white' : playingAs}
-				position={gameState.position}
+				position={game.fen()}
 				onPieceDrop={handlePieceDrop}
 			/>
 			<div>
@@ -156,7 +174,7 @@ function App() {
 					/>
 				) : (
 					<Options
-						history={gameState.history}
+						history={game.history()}
 						future={future}
 						onUndo={handleUndo}
 						onRedo={handleRedo}
