@@ -17,8 +17,8 @@ function App() {
 	// changes the changed setting
 	function handleSettingsChange(event) {
 		let setting = event.target.name;
-		if (setting === 'difficulty') setDifficulty(event.target.id);
-		else if (setting === 'playingAs') setPlayingAs(event.target.id);
+		if (setting === 'difficulty') setDifficulty(event.target.value);
+		else if (setting === 'playingAs') setPlayingAs(event.target.value);
 	}
 
 	// starts the game

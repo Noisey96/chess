@@ -1,7 +1,3 @@
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Stack from 'react-bootstrap/Stack';
-
 export default function Settings(props) {
 	let { difficulty, playingAs, onSettingsChange, onStart } = props;
 
@@ -18,56 +14,47 @@ export default function Settings(props) {
 	}
 
 	return (
-		<Stack id="settings" direction="horizontal" gap="5">
-			<Form.Group controlId="difficulty">
-				<Form.Label>Difficulty:</Form.Label>
-				<Form.Check
-					type="radio"
+		<>
+			<div className="form-control w-full max-w-xs">
+				<label className="label" htmlFor="difficulty">
+					<span className="label-text">Difficulty:</span>
+				</label>
+				<select
+					className="select-info select"
 					name="difficulty"
-					id="easy"
-					label="Easy"
-					checked={difficulty === 'easy'}
 					onChange={handleDifficultyChange}
-				/>
-				<Form.Check
-					type="radio"
-					name="difficulty"
-					id="medium"
-					label="Medium"
-					checked={difficulty === 'medium'}
-					onChange={handleDifficultyChange}
-				/>
-				<Form.Check
-					type="radio"
-					name="difficulty"
-					id="hard"
-					label="Hard"
-					checked={difficulty === 'hard'}
-					onChange={handleDifficultyChange}
-				/>
-			</Form.Group>
-			<Form.Group controlId="playingAs">
-				<Form.Label>Play As:</Form.Label>
-				<Form.Check
-					type="radio"
+				>
+					<option value="easy" selected={difficulty === 'easy'}>
+						Easy
+					</option>
+					<option value="medium" selected={difficulty === 'medium'}>
+						Medium
+					</option>
+					<option value="hard" selected={difficulty === 'hard'}>
+						Hard
+					</option>
+				</select>
+			</div>
+			<div className="form-control w-full max-w-xs">
+				<label className="label" htmlFor="playingAs">
+					<span className="label-text">Playing As:</span>
+				</label>
+				<select
+					className="select-info select"
 					name="playingAs"
-					id="black"
-					label="Black"
-					checked={playingAs === 'black'}
 					onChange={handlePlayingAsChange}
-				/>
-				<Form.Check
-					type="radio"
-					name="playingAs"
-					id="white"
-					label="White"
-					checked={playingAs === 'white'}
-					onChange={handlePlayingAsChange}
-				/>
-			</Form.Group>
-			<Button size="lg" onClick={handleStartClick}>
+				>
+					<option value="black" selected={playingAs === 'black'}>
+						Black
+					</option>
+					<option value="white" selected={playingAs === 'white'}>
+						White
+					</option>
+				</select>
+			</div>
+			<button className="btn-primary btn-lg btn" onClick={handleStartClick}>
 				Start
-			</Button>
-		</Stack>
+			</button>
+		</>
 	);
 }

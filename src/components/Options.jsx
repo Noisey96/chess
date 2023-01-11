@@ -1,6 +1,3 @@
-import Stack from 'react-bootstrap/Stack';
-import Button from 'react-bootstrap/Button';
-
 export default function Options(props) {
 	let { history, future, onUndo, onRedo, onRestart, onNewGame } = props;
 
@@ -21,19 +18,19 @@ export default function Options(props) {
 	}
 
 	return (
-		<Stack id="options" direction="horizontal" gap="3">
-			<Button variant="secondary" disabled={history.length < 2} onClick={handleUndoClick}>
+		<>
+			<button className="btn" disabled={history.length < 2} onClick={handleUndoClick}>
 				Undo
-			</Button>
-			<Button variant="secondary" disabled={!future.length} onClick={handleRedoClick}>
+			</button>
+			<button className="btn" disabled={!future.length} onClick={handleRedoClick}>
 				Redo
-			</Button>
-			<Button variant="warning" onClick={handleRestartClick}>
+			</button>
+			<button className="btn-secondary btn" onClick={handleRestartClick}>
 				Restart
-			</Button>
-			<Button variant="danger" onClick={handleNewGameClick}>
+			</button>
+			<button className="btn-accent btn" onClick={handleNewGameClick}>
 				New Game
-			</Button>
-		</Stack>
+			</button>
+		</>
 	);
 }
