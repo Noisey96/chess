@@ -8,7 +8,7 @@ Furthermore, the computer's three difficulties are three different chess engines
 
 This project contains a src folder and some additional files. The src folder has a components folder, a utilities folder, a CSS file, and a JSX file. Within the components folder, each JSX file with an associated CSS file is equivalent to a React component. Meanwhile within the utilities folder, there are two files: engines.js and functions.js. The engines.js file contains the three chess engines used by the application. The functions.js contains a single function used across all the components to safely update the Chess object.
 
-Lastly, this project was started with a [Create React App](https://create-react-app.dev/) template and later modified to a [Vite](https://vitejs.dev/) template. The chessboard comes from [react-chessboard](https://www.npmjs.com/package/react-chessboard), while the other UI elements comes from [react-bootstrap](https://react-bootstrap.github.io/).
+Lastly, this project uses a [Vite](https://vitejs.dev/) React template with [TailwindCSS](https://tailwindcss.com/) included. The chessboard comes from [react-chessboard](https://www.npmjs.com/package/react-chessboard), while the other UI elements comes from [daisyUI](https://daisyui.com/).
 
 ## How?
 
@@ -17,20 +17,20 @@ Lastly, this project was started with a [Create React App](https://create-react-
 
 ## Future Plans
 
-There are three different ways this project can grow. First, I can further improve the UI. At the moment, I am thinking about using [Tailwind CSS](https://tailwindcss.com/). Second, I can work on linking this up to a [server](https://github.com/chesslablab/chess-server). This would enable users to play against each other via a webpage. Third, I can improve my chess engine to be smarter.
+There are two different ways this project can grow. First, I can work on linking this up to a [server](https://github.com/chesslablab/chess-server). This would enable users to play against each other via a webpage. Second, I can improve my chess engine to be smarter.
 
 ## Why?
 
-I found an article on chess engines, so I wanted to work on my own. Originally, this project was completed using vanilla JS. However, I wanted to learn React. After completing a React tutorial, transitioning this project from vanilla JS to React seemed to be the next step to build my skills in React. Next, I transitioned this project from using a [Create React App](https://create-react-app.dev/) template to a [Vite](https://vitejs.dev/) template to increase the number of tools I have worked with.
+I found an article on chess engines, so I wanted to work on my own. Originally, this project was completed using vanilla JS. However, I wanted to learn React. After completing a React tutorial, transitioning this project from vanilla JS to React seemed to be the next step to build my skills in React. Next, I transitioned this project from using a [Create React App](https://create-react-app.dev/) template to a [Vite](https://vitejs.dev/) template to increase the number of tools I have worked with. Lastly, I transitioned this project from using [react-bootstrap](https://react-bootstrap.github.io/) to using [TailwindCSS](https://tailwindcss.com/) and [daisyUI](https://daisyui.com/) to have more control over my user interface.
 
 ## Credits
 
 -   [This article](https://www.chessengines.org/) for the original inspiration.
--   Tools used in building this project:
+-   Tools used in final project:
     1. [chess.js](https://www.npmjs.com/package/chess.js)
-    2. [Create React App](https://create-react-app.dev/)
+    2. [daisyUI](https://daisyui.com/)
     3. [react-chessboard](https://www.npmjs.com/package/react-chessboard)
-    4. [react-bootstrap](https://react-bootstrap.github.io/)
+    4. [TailwindCSS](https://tailwindcss.com/)
     5. [Vite](https://vitejs.dev/)
     6. Various VS Code Extensions including...
         - [Console Ninja](https://marketplace.visualstudio.com/items?itemName=WallabyJs.console-ninja)

@@ -14,21 +14,19 @@ function App() {
 	let [future, setFuture] = useState([]);
 	let timeoutRef = useRef(null);
 
-	// changes the changed setting
-	function handleSettingsChange(event) {
-		let setting = event.target.name;
-		if (setting === 'difficulty') setDifficulty(event.target.value);
-		else if (setting === 'playingAs') setPlayingAs(event.target.value);
-	}
-
 	// starts the game
-	function handleStart() {
+	function handleStart(settings) {
+		// update the game with selected settings
+		const selectedDifficulty = settings.difficulty;
+		const selectedPlayingAs = settings.playingAs;
+		setDifficulty(selectedDifficulty);
+		setPlayingAs(selectedPlayingAs);
 		setPlaying(true);
 
 		// if player has black pieces, perform computer's turn
-		if (playingAs === 'black') {
-			const engine = engines[difficulty];
-			const chosenMove = engine(game, playingAs);
+		if (selectedPlayingAs === 'black') {
+			const engine = engines[selectedDifficulty];
+			const chosenMove = engine(game, selectedPlayingAs);
 			let nextGame = new Chess();
 			nextGame.loadPgn(game.pgn());
 			nextGame.move(chosenMove);
@@ -71,7 +69,7 @@ function App() {
 			const possibleMoves = game.moves();
 			if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
 				console.log(game.pgn());
-				return;
+				return game;
 			}
 
 			// perform move
@@ -166,12 +164,7 @@ function App() {
 			/>
 			<div>
 				{!playing ? (
-					<Settings
-						difficulty={difficulty}
-						playingAs={playingAs}
-						onSettingsChange={handleSettingsChange}
-						onStart={handleStart}
-					/>
+					<Settings onStart={handleStart} />
 				) : (
 					<Options
 						history={game.history()}
