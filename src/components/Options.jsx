@@ -18,7 +18,7 @@ export default function Options(props) {
 	}
 
 	return (
-		<>
+		<div>
 			<button className="btn" disabled={history.length < 2} onClick={handleUndoClick}>
 				Undo
 			</button>
@@ -31,6 +31,6 @@ export default function Options(props) {
 			<button className="btn-accent btn" onClick={handleNewGameClick}>
 				New Game
 			</button>
-		</>
+		</div>
 	);
 }

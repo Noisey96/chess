@@ -5,6 +5,7 @@ import Title from './Title';
 import Settings from './Settings';
 import Options from './Options';
 import { engines } from '../utilities/engines';
+import { ended, isPromotion } from '../utilities/functions';
 
 function App() {
 	let [difficulty, setDifficulty] = useState('easy');
@@ -37,40 +38,41 @@ function App() {
 	// performs the player's turn
 	function handlePieceDrop(start, end) {
 		// check for endgame scenarios
-		const possibleMoves = game.moves();
-		if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
-			console.log(game.pgn());
-			return false;
-		}
+		if (ended(game)) return false;
 
 		// perform move
 		let nextGame = new Chess();
 		nextGame.loadPgn(game.pgn());
-		const move = nextGame.move({
-			from: start,
-			to: end,
-		});
+		let move;
+		if (isPromotion(game, start, end)) {
+			move = nextGame.move({
+				from: start,
+				to: end,
+				promotion: 'q',
+			});
+		} else {
+			move = nextGame.move({
+				from: start,
+				to: end,
+			});
+		}
 
-		// move failed
+		// if valid, go to computer's turn
 		if (move === null) return false;
-
-		// move succeeded
-		setGame(nextGame);
-		setFuture([]);
-		const newTimeout = setTimeout(computerTurn, 500);
-		timeoutRef.current = newTimeout;
-		return true;
+		else {
+			setGame(nextGame);
+			setFuture([]);
+			const newTimeout = setTimeout(computerTurn, 500);
+			timeoutRef.current = newTimeout;
+			return true;
+		}
 	}
 
 	// performs the computer's turn
 	function computerTurn() {
 		setGame((game) => {
 			// check for endgame scenarios
-			const possibleMoves = game.moves();
-			if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
-				console.log(game.pgn());
-				return game;
-			}
+			if (ended(game)) return game;
 
 			// perform move
 			let engine = engines[difficulty];
