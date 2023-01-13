@@ -152,19 +152,21 @@ function App() {
 
 	return (
 		<>
-			<Title playing={playing} />
-			<Chessboard
-				boardWidth="600"
-				customBoardStyle={{
-					border: '2px solid black',
-					borderRadius: '4px',
-				}}
-				arePiecesDraggable={playing}
-				boardOrientation={!playing ? 'white' : playingAs}
-				position={game.fen()}
-				onPieceDrop={handlePieceDrop}
-			/>
-			<div>
+			<div className="flex flex-col items-center">
+				<Title playing={playing} />
+				<Chessboard
+					boardWidth="600"
+					customBoardStyle={{
+						border: '2px solid black',
+						borderRadius: '4px',
+					}}
+					arePiecesDraggable={playing}
+					boardOrientation={!playing ? 'white' : playingAs}
+					position={game.fen()}
+					onPieceDrop={handlePieceDrop}
+				/>
+			</div>
+			<div className="flex justify-center">
 				{!playing ? (
 					<Settings onStart={handleStart} />
 				) : (

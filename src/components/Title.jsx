@@ -1,9 +1,11 @@
 export default function Title(props) {
 	let { playing } = props;
 	return (
-		<div className={playing ? 'hidden' : ''}>
-			<div>Chess</div>
-			<div>Play a game of chess against a computer!</div>
+		<div className={playing ? 'invisible' : ''}>
+			<div className="m-2 text-center text-6xl font-bold">Chess</div>
+			<div className="m-2 text-center text-2xl italic">
+				Play a game of chess against a computer!
+			</div>
 		</div>
 	);
 }

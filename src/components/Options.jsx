@@ -18,7 +18,7 @@ export default function Options(props) {
 	}
 
 	return (
-		<div>
+		<div className="m-2 flex w-4/6 max-w-2xl items-center justify-center gap-5">
 			<button className="btn" disabled={history.length < 2} onClick={handleUndoClick}>
 				Undo
 			</button>

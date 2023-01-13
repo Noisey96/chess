@@ -8,7 +8,11 @@ export default function Settings(props) {
 	}
 
 	return (
-		<form method="post" onSubmit={handleSubmit}>
+		<form
+			className="m-2 flex w-4/6 max-w-2xl items-end gap-3"
+			method="post"
+			onSubmit={handleSubmit}
+		>
 			<div className="form-control w-full max-w-xs">
 				<label className="label" htmlFor="difficulty">
 					<span className="label-text">Difficulty:</span>
