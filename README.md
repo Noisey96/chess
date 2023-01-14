@@ -1,6 +1,6 @@
 # Chess
 
-This project constructs a single page application where a user can play against a computer in chess. Before the game, the user can select a difficulty and a color to play as. After starting the game, the user can click and drag their pieces, undo and redo their moves, restart the game, and start a new game. Lastly, when the game has ended, the game is returned in the PGN format. You can load your PGN in [this website](https://www.chess.com/analysis) to analyze your game.
+This project constructs a webpage where a user can play against a computer in chess. Before the game, the user can select a difficulty and a color to play as. After starting the game, the user can click and drag their pieces, undo and redo their moves, restart the game, and start a new game. Lastly, when the game has ended, the game is returned in the PGN format. You can load your PGN in [this website](https://www.chess.com/analysis) to analyze your game.
 
 Furthermore, the computer's three difficulties are three different chess engines. As of 12/26, the three chess engines are as follows: makeRandomMove, preferRandomCapture, and lazyMiniMax. The makeRandomMove engine makes a random move, while the preferRandomCapture engine makes a random capture or a random move (depending on whether there is a capture to be made or not). Lastly, the lazyMiniMax engine is essentially a preferBestCapture engine. However, the lazyMiniMax engine is designed similar to a miniMax engine where the computer looks only at its current move to maximize its position.
 
@@ -26,7 +26,7 @@ I found an article on chess engines, so I wanted to work on my own. Originally, 
 ## Credits
 
 -   [This article](https://www.chessengines.org/) for the original inspiration.
--   Tools used in final project:
+-   Tools used in current version:
     1. [chess.js](https://www.npmjs.com/package/chess.js)
     2. [daisyUI](https://daisyui.com/)
     3. [react-chessboard](https://www.npmjs.com/package/react-chessboard)
