@@ -1,4 +1,4 @@
-export default function Options(props) {
+export default function GameOptions(props) {
 	let { history, future, onUndo, onRedo, onRestart, onNewGame } = props;
 
 	function handleUndoClick() {
