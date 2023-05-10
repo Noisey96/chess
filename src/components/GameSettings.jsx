@@ -8,11 +8,7 @@ export default function GameSettings(props) {
 	}
 
 	return (
-		<form
-			className="m-2 flex w-4/6 max-w-2xl items-end gap-3"
-			method="post"
-			onSubmit={handleSubmit}
-		>
+		<form className="m-2 flex w-4/6 max-w-2xl items-end gap-3" method="post" onSubmit={handleSubmit}>
 			<div className="form-control w-full max-w-xs">
 				<label className="label" htmlFor="difficulty">
 					<span className="label-text">Difficulty:</span>
@@ -32,8 +28,9 @@ export default function GameSettings(props) {
 					<option value="white">White</option>
 				</select>
 			</div>
-			<button className="btn-primary btn-lg btn" type="submit">
+			<button className="btn-primary btn-lg btn gap-1 text-2xl" type="submit">
 				Start
+				<ion-icon name="play-circle-sharp" aria-hidden="true"></ion-icon>
 			</button>
 		</form>
 	);

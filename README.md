@@ -6,9 +6,9 @@ Furthermore, the computer's three difficulties are three different chess engines
 
 ## What?
 
-This project contains a src folder and some additional files. The src folder has a components folder, a utilities folder, a CSS file, and a JSX file. Within the components folder, each JSX file with an associated CSS file is equivalent to a React component. Meanwhile within the utilities folder, there are two files: engines.js and functions.js. The engines.js file contains the three chess engines used by the application. The functions.js contains a couple functions to hide chess-specific logic.
+This project contains a src folder, a public folder, and some additional files. The src folder has a components folder, a utilities folder, a CSS file, and a JSX file. Within the components folder, each JSX file is equivalent to a React component. Meanwhile within the utilities folder, there are two files: engines.js and functions.js. The engines.js file contains the three chess engines used by the application. The functions.js contains a couple functions to hide chess-specific logic. The public folder stores the favicon used within the application.
 
-Lastly, this project uses a [Vite](https://vitejs.dev/) React template with [TailwindCSS](https://tailwindcss.com/) included. The chessboard comes from [react-chessboard](https://www.npmjs.com/package/react-chessboard), while the other UI elements comes from [daisyUI](https://daisyui.com/).
+Lastly, this project uses a [Vite](https://vitejs.dev/) React template with [TailwindCSS](https://tailwindcss.com/) included. The chessboard comes from [react-chessboard](https://www.npmjs.com/package/react-chessboard), while the other interactive elements come from [daisyUI](https://daisyui.com/). Further, the favicon comes from [Game-icons.net](https://game-icons.net/), while the other icons come from [ionicons](https://ionic.io/ionicons).
 
 ## How?
 
@@ -21,7 +21,7 @@ There are three different ways this project can grow. First, I can implement mor
 
 ## Why?
 
-I found an article on chess engines, so I wanted to work on my own. Originally, this project was completed using vanilla JS. However, I wanted to learn React. After completing a React tutorial, transitioning this project from vanilla JS to React seemed to be the next step to build my skills in React. Next, I transitioned this project from using a [Create React App](https://create-react-app.dev/) template to a [Vite](https://vitejs.dev/) template to increase the number of tools I have worked with. Lastly, I transitioned this project from using [react-bootstrap](https://react-bootstrap.github.io/) to using [TailwindCSS](https://tailwindcss.com/) and [daisyUI](https://daisyui.com/) to have more control over my user interface.
+I found an article on chess engines, so I wanted to work on my own. Originally, this project was completed using vanilla JS. However, I wanted to learn React. After completing a React tutorial, transitioning this project from vanilla JS to React seemed to be the next step to build my skills in React. Next, I transitioned this project from using a [Create React App](https://create-react-app.dev/) template to a [Vite](https://vitejs.dev/) template to increase the number of tools I have worked with. Afterwards, I focused on the user interface. Towards this, I transitioned this project from using [react-bootstrap](https://react-bootstrap.github.io/) to using [TailwindCSS](https://tailwindcss.com/) and [daisyUI](https://daisyui.com/) to have more control over my user interface. Lastly, I added the favicon and icons from [Game-icons.net](https://game-icons.net/) and [ionicons](https://ionic.io/ionicons) respectively.
 
 ## Credits
 
@@ -29,10 +29,12 @@ I found an article on chess engines, so I wanted to work on my own. Originally, 
 -   Tools used in current version:
     1. [chess.js](https://www.npmjs.com/package/chess.js)
     2. [daisyUI](https://daisyui.com/)
-    3. [react-chessboard](https://www.npmjs.com/package/react-chessboard)
-    4. [TailwindCSS](https://tailwindcss.com/)
-    5. [Vite](https://vitejs.dev/)
-    6. Various VS Code Extensions including...
+    3. [Game-icons.net](https://game-icons.net/)
+    4. [ionicons](https://ionic.io/ionicons)
+    5. [react-chessboard](https://www.npmjs.com/package/react-chessboard)
+    6. [TailwindCSS](https://tailwindcss.com/)
+    7. [Vite](https://vitejs.dev/)
+    8. Various VS Code Extensions including...
         - [Console Ninja](https://marketplace.visualstudio.com/items?itemName=WallabyJs.console-ninja)
         - [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
         - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)

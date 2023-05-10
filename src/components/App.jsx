@@ -10,9 +10,7 @@ import { ended, isPromotion } from '../utilities/functions';
 
 function App() {
 	let [theme, setTheme] = useState(
-		window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
-			? 'winter'
-			: 'night'
+		window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'winter' : 'night',
 	);
 	let [difficulty, setDifficulty] = useState('easy');
 	let [playingAs, setPlayingAs] = useState('black');
@@ -152,7 +150,7 @@ function App() {
 	}
 
 	// ends the game
-	function handleNewGame() {
+	function handleEndGame() {
 		clearTimeout(timeoutRef.current);
 		let nextGame = new Chess();
 		nextGame.loadPgn(game.pgn());
@@ -189,7 +187,7 @@ function App() {
 						onUndo={handleUndo}
 						onRedo={handleRedo}
 						onRestart={handleRestart}
-						onNewGame={handleNewGame}
+						onEndGame={handleEndGame}
 					/>
 				)}
 			</div>
